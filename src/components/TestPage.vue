@@ -1,26 +1,38 @@
 <template>
-  <div class="hello">
-    <my-menu></my-menu>
-
-
-
+  <div>
+    <div class="hello">
+      <my-menu></my-menu>
+    </div>
+    <p>{{ autocomp }}</p>
+    <autocomplete v-model="autocomp"
+                  :fetch="fetchData"
+                  :prop="{title: 'full_name', value: 'id'}"></autocomplete>
   </div>
 </template>
 
 <script>
   import MyMenu from './MyMenu';
+  import Autocomplete from './Autocomplete';
 
   export default {
     name: 'Main',
     components: {
       MyMenu,
+      Autocomplete,
     },
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App',
+        autocomp: '',
       };
     },
+    methods: {
+      fetchData() {
+        return fetch('/static/json/testdata.json')
+          .then(value => value.json().then(data => data.contractors));
+      },
+    },
   };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
